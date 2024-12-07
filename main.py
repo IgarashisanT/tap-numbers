@@ -7,8 +7,8 @@ from constant import Const
 class TapNumbers:
     def __init__(self):
         px.init(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT, title=Const.GAME_TITLE)
-        os_name = platform.system()
-        is_pc =  os_name == "Windows" or os_name == "Darwin" or os_name == "Linux"
+        self.os_name = platform.system()
+        is_pc = self.os_name == "Windows" or self.os_name == "Darwin" or self.os_name == "Linux"
         self.__reset()
         px.mouse(is_pc)
         px.run(self.update, self.draw)
@@ -33,6 +33,7 @@ class TapNumbers:
                 x,y = i % Const.GRID_SIZE * Const.CELL_SIZE, i // Const.GRID_SIZE * Const.CELL_SIZE
                 px.rect(x, y, Const.CELL_SIZE, Const.CELL_SIZE, 5)
                 px.text(x + Const.CELL_SIZE // 2 - 2, y + Const.CELL_SIZE // 2 - 2, str(num), 7)
+        px.text(2,2,self.os_name,px.COLOR_WHITE)
         if self.game_over:
             px.text(50, Const.WINDOW_HEIGHT / 2 - 10, "GAME CLEAR!", px.frame_count % 16)
             px.text(50, Const.WINDOW_HEIGHT / 2, f"Time: {self.end_time - self.start_time:.2f}s", 7)
