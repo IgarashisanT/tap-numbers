@@ -8,7 +8,7 @@ class TapNumbers:
     def __init__(self):
         px.init(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT, title=Const.GAME_TITLE)
         os_name = platform.system()
-        is_pc =  os_name == "Windows" or os_name == "Darwin" or os_name == "Linux"
+        is_pc = os_name == "Windows" or os_name == "Darwin" or os_name == "Linux"
         self.__reset()
         px.mouse(is_pc)
         px.run(self.update, self.draw)
