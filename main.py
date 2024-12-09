@@ -1,16 +1,19 @@
-import platform
 import pyxel as px
 import random
 import time
 from constant import Const
+# from js はEmscripten環境以外では例外発生するのでcatchして環境を判定する
+try:
+    from js import navigator
+    is_web = True
+except ImportError:
+    is_web = False
 
 class TapNumbers:
     def __init__(self):
         px.init(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT, title=Const.GAME_TITLE)
-        os_name = platform.system()
-        is_pc = os_name == "Windows" or os_name == "Darwin" or os_name == "Linux"
         self.__reset()
-        px.mouse(is_pc)
+        px.mouse(not self.__is_mobile())
         px.run(self.update, self.draw)
 
     def update(self):
@@ -44,5 +47,12 @@ class TapNumbers:
         self.current_number = 1
         self.start_time = time.time()
         self.game_over = False
+
+    def __is_mobile(self):
+        # web版でない = モバイル端末でないということにする
+        if not is_web:
+            return False
+        user_agent = navigator.userAgent.lower()
+        return "android" in user_agent or "iphone" in user_agent or "ipad" in user_agent
 
 TapNumbers()
