@@ -1,13 +1,21 @@
 import pyxel as px
 import random
 import time
-from constant import Const
+# from constant import Const
 # from js はEmscripten環境以外では例外発生するのでcatchして環境を判定する
 try:
     from js import navigator
-    is_web = True
+    import_ok = True
 except ImportError:
-    is_web = False
+    import_ok = False
+
+class Const:
+    WINDOW_WIDTH = 160
+    WINDOW_HEIGHT = 160
+    GAME_TITLE = "TAP NUMBERS"
+
+    GRID_SIZE = 4
+    CELL_SIZE = WINDOW_WIDTH // GRID_SIZE
 
 class TapNumbers:
     def __init__(self):
@@ -40,6 +48,7 @@ class TapNumbers:
             px.text(50, Const.WINDOW_HEIGHT / 2 - 10, "GAME CLEAR!", px.frame_count % 16)
             px.text(50, Const.WINDOW_HEIGHT / 2, f"Time: {self.end_time - self.start_time:.2f}s", 7)
             px.text(50, Const.WINDOW_HEIGHT / 2 + 10, "TAP TO RETRY", 7)
+        px.text(2,2,"import_" + str(import_ok) + ",mobile_" + str(self.__is_mobile()),px.COLOR_WHITE)
 
     def __reset(self):
         self.numbers = list(range(1, Const.GRID_SIZE ** 2 + 1))
@@ -50,7 +59,7 @@ class TapNumbers:
 
     def __is_mobile(self):
         # web版でない = モバイル端末でないということにする
-        if not is_web:
+        if not import_ok:
             return False
         user_agent = navigator.userAgent.lower()
         return "android" in user_agent or "iphone" in user_agent or "ipad" in user_agent
