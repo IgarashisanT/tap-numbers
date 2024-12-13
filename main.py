@@ -1,13 +1,8 @@
 import pyxel as px
 import random
 import time
-# from constant import Const
-# from js はEmscripten環境以外では例外発生するのでcatchして環境を判定する
-try:
-    from js import navigator
-    import_ok = True
-except ImportError:
-    import_ok = False
+from constant import Const
+from device_checker import DeviceChecker
 
 class Const:
     WINDOW_WIDTH = 160
@@ -21,7 +16,8 @@ class TapNumbers:
     def __init__(self):
         px.init(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT, title=Const.GAME_TITLE)
         self.__reset()
-        px.mouse(not self.__is_mobile())
+        self.deviceChecker = DeviceChecker()
+        px.mouse(self.deviceChecker.is_pc())
         px.run(self.update, self.draw)
 
     def update(self):
@@ -48,7 +44,6 @@ class TapNumbers:
             px.text(50, Const.WINDOW_HEIGHT / 2 - 10, "GAME CLEAR!", px.frame_count % 16)
             px.text(50, Const.WINDOW_HEIGHT / 2, f"Time: {self.end_time - self.start_time:.2f}s", 7)
             px.text(50, Const.WINDOW_HEIGHT / 2 + 10, "TAP TO RETRY", 7)
-        px.text(2,2,"import_" + str(import_ok) + ",mobile_" + str(self.__is_mobile()),px.COLOR_WHITE)
 
     def __reset(self):
         self.numbers = list(range(1, Const.GRID_SIZE ** 2 + 1))
@@ -56,12 +51,5 @@ class TapNumbers:
         self.current_number = 1
         self.start_time = time.time()
         self.game_over = False
-
-    def __is_mobile(self):
-        # web版でない = モバイル端末でないということにする
-        if not import_ok:
-            return False
-        user_agent = navigator.userAgent.lower()
-        return "android" in user_agent or "iphone" in user_agent or "ipad" in user_agent
 
 TapNumbers()
