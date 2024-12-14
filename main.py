@@ -4,14 +4,6 @@ import time
 from constant import Const
 from device_checker import DeviceChecker
 
-class Const:
-    WINDOW_WIDTH = 160
-    WINDOW_HEIGHT = 160
-    GAME_TITLE = "TAP NUMBERS"
-
-    GRID_SIZE = 4
-    CELL_SIZE = WINDOW_WIDTH // GRID_SIZE
-
 class TapNumbers:
     def __init__(self):
         px.init(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT, title=Const.GAME_TITLE)

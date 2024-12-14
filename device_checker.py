@@ -22,7 +22,3 @@ class DeviceChecker:
     
     def is_web_launcher(self):
         return is_web_launcher
-    
-    def get_user_agent(self):
-        return self.user_agent
-    
